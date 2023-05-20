@@ -14,6 +14,8 @@ const port = process.env.PORT || 5000;
 // }
 // app.use(cors(corsConfig))
 // app.options("", cors(corsConfig))
+
+//middlewares
 app.use(cors());
 app.use(express.json());
 
@@ -39,18 +41,23 @@ async function run() {
 
     const toyCollection = client.db('toyShop').collection('toys');
 
+    //post or create api
     app.post('/postToy', async (req, res) => {
       const body = req.body;
       const result = await toyCollection.insertOne(body);
       res.send(result);
     })
 
+
+    //get 20(limit) data  
     app.get('/toys', async (req, res) => {
-      const cursor = toyCollection.find();
+      const cursor = toyCollection.find().limit(20); // Add limit(20) to the cursor
       const result = await cursor.toArray();
       res.send(result);
-    })
+    });
 
+
+    //get data by category
     app.get("/toy/:text", async (req, res) => {
       const text = req.params?.text
       const result = await toyCollection.find({
@@ -60,15 +67,16 @@ async function run() {
     });
 
 
+    //get data with Email
     app.get("/myToys/:email", async (req, res) => {
-      
+
       const result = await toyCollection.find({ SellerEmail: req.params.email }).toArray();
       res.send(result);
     })
 
 
 
-    //get single data from database
+    //get single data using id
     app.get("/toys/:id", async (req, res) => {
       console.log(req.params.id);
       const toy = await toyCollection.findOne({
