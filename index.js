@@ -60,7 +60,13 @@ async function run() {
     });
 
 
-   
+    app.get("/myToys/:email", async (req, res) => {
+      
+      const result = await toyCollection.find({ SellerEmail: req.params.email }).toArray();
+      res.send(result);
+    })
+
+
 
     //get single data from database
     app.get("/toys/:id", async (req, res) => {
