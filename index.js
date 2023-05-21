@@ -41,6 +41,27 @@ async function run() {
 
     const toyCollection = client.db('toyShop').collection('toys');
 
+
+
+    //Indexing
+    // const indexKeys = { Product_name: 1 };
+    // const indexOption = { name: "product" };
+
+    // const result = await toyCollection.createIndex(indexKeys, indexOption);
+
+
+    //get data by search
+    // app.get("/searchByName/:text", async (req, res) => {
+    //   const searchText = req.params?.text;
+    //   const result = await toyCollection.find({
+    //     name: { $regex:text }
+    //   }).toArray();
+    //   res.send(result);
+
+    // })
+
+
+
     //post or create api
     app.post('/postToy', async (req, res) => {
       const body = req.body;
@@ -55,6 +76,15 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     });
+
+
+    //Udate data 
+    // app.get('/updateToy/:id', async (req, res) => {
+    //   const id = req.params.id;
+    //   const query = { _id: new ObjectId(id) }
+    //   const result = await toyCollection.findOne(query);
+    //   res.send(result);
+    // })
 
 
     //get data by category
@@ -84,6 +114,16 @@ async function run() {
       });
       res.send(toy);
     });
+
+
+    // delete data from database with api 
+    app.delete('/toys/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+
+      const result = await toyCollection.deleteOne(query);
+      res.send(result);
+    })
 
 
     // Send a ping to confirm a successful connection
