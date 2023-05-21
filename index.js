@@ -43,18 +43,18 @@ async function run() {
 
 
 
-    //Indexing
+    // // Indexing
     // const indexKeys = { Product_name: 1 };
     // const indexOption = { name: "product" };
 
     // const result = await toyCollection.createIndex(indexKeys, indexOption);
 
 
-    //get data by search
+    // // get data by search
     // app.get("/searchByName/:text", async (req, res) => {
     //   const searchText = req.params?.text;
     //   const result = await toyCollection.find({
-    //     name: { $regex:text }
+    //     Product_name: { $regex:text }
     //   }).toArray();
     //   res.send(result);
 
@@ -92,12 +92,13 @@ async function run() {
       const filter = {_id: new ObjectId(id)}
       const options = { upsert: true };
       const updatedToy = req.body;
+      console.log(updatedToy)
 
       const toy = {
           $set: {
-            Product_price: updatedToy.Product_price, 
-            Product_quantity: updatedToy.Product_quantity, 
-            Descriptions: updatedToy.Descriptions, 
+            Product_price: updatedToy.price, 
+            Product_quantity: updatedToy.quantity, 
+            Descriptions: updatedToy.description, 
              
           }
       }
