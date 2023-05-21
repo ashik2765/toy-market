@@ -78,13 +78,33 @@ async function run() {
     });
 
 
-    //Udate data 
-    // app.get('/updateToy/:id', async (req, res) => {
-    //   const id = req.params.id;
-    //   const query = { _id: new ObjectId(id) }
-    //   const result = await toyCollection.findOne(query);
-    //   res.send(result);
-    // })
+    // Udate data 
+    app.get('/updateToy/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+      const result = await toyCollection.findOne(query);
+      res.send(result);
+    })
+    
+
+    app.put('/updateToy/:id', async(req, res) => {
+      const id = req.params.id;
+      const filter = {_id: new ObjectId(id)}
+      const options = { upsert: true };
+      const updatedToy = req.body;
+
+      const toy = {
+          $set: {
+            Product_price: updatedToy.Product_price, 
+            Product_quantity: updatedToy.Product_quantity, 
+            Descriptions: updatedToy.Descriptions, 
+             
+          }
+      }
+
+      const result = await toyCollection.updateOne(filter, toy, options);
+      res.send(result);
+  })
 
 
     //get data by category
